@@ -1,6 +1,12 @@
 Spaceship bob = new Spaceship();
 Star[] space;
+ArrayList <Bullet> shot = new ArrayList <Bullet>();
 Asteroid[] astroworld;
+boolean wIsPressed = false;
+boolean aIsPressed = false;
+boolean sIsPressed = false;
+boolean dIsPressed = false;
+boolean spaceBar = false;
 public void setup() 
 {
   background(0);
@@ -30,25 +36,48 @@ public void draw()
   }
   bob.show();
   bob.move();
-
+  if(wIsPressed == true){
+		bob.accelerate(0.05);
+  	}
+	if(aIsPressed == true){
+		bob.turn(-2);
+	}
+	if(dIsPressed == true){
+		bob.turn(2);
+	}
+	if(wIsPressed == true && aIsPressed == true){
+		bob.accelerate(0.05);
+		bob.turn(-3);
+	}
+	if(wIsPressed == true && dIsPressed == true){
+		bob.accelerate(0.05);
+		bob.turn(3);
+	}
+	if(sIsPressed == true){
+		bob.accelerate(-0.05);
+	}
+//	if(spaceBar == true){
+//		shot.show();
+//		shot.move();
+//	}
 }
 public void keyPressed()
 {
 	if(key == 'w')
 	{
-		bob.accelerate(0.5);
+		wIsPressed = true;
 	}
 	if(key == 'a')
 	{
-		bob.turn(-10);
+		aIsPressed = true;
 	}
 	if(key == 's')
 	{
-		bob.accelerate(-0.5);
+		sIsPressed = true;
 	}
 	if(key == 'd')
 	{
-		bob.turn(10);
+		dIsPressed = true;
 	}
 	if(key == 'e')
 	{
@@ -63,6 +92,26 @@ public void keyPressed()
 	{
 		bob.setDirectionX(0);
 		bob.setDirectionY(0);
+	}
+//	if(key == ' ')
+//	{
+ // 		shot.show();
+ // 		shot.move();
+//	}
+}
+public void keyReleased()
+{
+	if(key == 'w'){
+		wIsPressed = false;
+	}
+	if(key == 'a'){
+		aIsPressed = false;
+	}
+	if(key == 's'){
+		sIsPressed = false;
+	}
+	if(key == 'd'){
+		dIsPressed = false;
 	}
 }
 
