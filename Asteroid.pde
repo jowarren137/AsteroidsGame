@@ -80,4 +80,12 @@ class Asteroid extends Floater
     {
     	myPointDirection = myDirection;
     }
+    public float getX()
+	{
+		return (float)myCenterX;
+	}
+	public float getY()
+	{
+		return (float)myCenterY;
+	}
 }

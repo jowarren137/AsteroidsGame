@@ -1,25 +1,25 @@
 Spaceship bob = new Spaceship();
 Star[] space;
 ArrayList <Bullet> shot = new ArrayList <Bullet>();
-Asteroid[] astroworld;
+ArrayList <Asteroid> astroworld = new ArrayList <Asteroid>();
 boolean wIsPressed = false;
 boolean aIsPressed = false;
 boolean sIsPressed = false;
 boolean dIsPressed = false;
 boolean spaceBar = false;
+boolean rIsPressed = false;
 public void setup() 
 {
   background(0);
   size(500,500);
   space = new Star[400];
-  astroworld = new Asteroid[15];
   for(int i = 0; i < space.length; i++)
   {
   	space[i] = new Star();
   }
-  for(int i = 0; i < astroworld.length; i++)
+  for(int i = 0; i < 15; i++)
   {
-  	astroworld[i] = new Asteroid();
+  	astroworld.add(new Asteroid());
   }
 }
 public void draw() 
@@ -29,10 +29,15 @@ public void draw()
   {
   	space[i].show();
   }
-  for(int i = 0; i < astroworld.length; i++)
+  for(int i = 0; i < astroworld.size(); i++)
   {
-  	astroworld[i].show();
-  	astroworld[i].move();
+  	astroworld.get(i).show();
+  	astroworld.get(i).move();
+  }
+  for(int i = 0; i < shot.size(); i++)
+  {
+  	shot.get(i).show();
+  	shot.get(i).move();
   }
   bob.show();
   bob.move();
@@ -56,10 +61,52 @@ public void draw()
 	if(sIsPressed == true){
 		bob.accelerate(-0.05);
 	}
-//	if(spaceBar == true){
-//		shot.show();
-//		shot.move();
-//	}
+	if(spaceBar == true){
+		shot.add(new Bullet(bob));
+	}
+	for(int i = 0; i < shot.size(); i++)
+	{
+		if(shot.get(i).getX() >= 499 || shot.get(i).getX() <= 1)
+		{
+			shot.remove(i);
+			break;
+		}
+	}
+	for(int i = 0; i < shot.size(); i++)
+	{
+		if(shot.get(i).getY() >= 499 || shot.get(i).getY() <= 1)
+		{
+			shot.remove(i);
+			break;
+		}
+	}
+	for(int i = 0; i < astroworld.size(); i++)
+  	{
+    	for(int j = 0; j < shot.size(); j++)
+    	{
+      		if(dist((float)shot.get(j).getX(), (float)shot.get(j).getY(), (float)astroworld.get(i).getX(), (float)astroworld.get(i).getY()) < 20)
+      		{
+        	shot.remove(j);
+        	astroworld.remove(i);
+        	break;
+      		}
+ 		}
+    }
+    for(int i = 0; i < astroworld.size(); i++)
+  	{
+      	if(dist((float)bob.getX(), (float)bob.getY(), (float)astroworld.get(i).getX(), (float)astroworld.get(i).getY()) < 20)
+      	{
+        	astroworld.remove(i);
+        	break;
+      	}
+    }
+    if(rIsPressed == true)
+    {
+    	for(int i = 0; i < 10; i++)
+    	{
+    		astroworld.add(new Asteroid());
+    	}
+    }
 }
 public void keyPressed()
 {
@@ -93,11 +140,14 @@ public void keyPressed()
 		bob.setDirectionX(0);
 		bob.setDirectionY(0);
 	}
-//	if(key == ' ')
-//	{
- // 		shot.show();
- // 		shot.move();
-//	}
+	if(key == ' ')
+	{
+		spaceBar = true;
+	}
+	if(key == 'r')
+	{
+		rIsPressed = true;
+	}
 }
 public void keyReleased()
 {
@@ -112,6 +162,12 @@ public void keyReleased()
 	}
 	if(key == 'd'){
 		dIsPressed = false;
+	}
+	if(key == ' '){
+		spaceBar = false;
+	}
+	if(key == 'r'){
+		rIsPressed = false;
 	}
 }
 
